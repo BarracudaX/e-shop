@@ -19,17 +19,20 @@ repositories {
 }
 
 dependencies {
+    //spring
     implementation ("org.springframework.boot:spring-boot-starter-liquibase")
     implementation ("org.springframework.boot:spring-boot-starter-security")
     implementation ("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation ("org.springframework.boot:spring-boot-starter-webmvc")
     implementation ("org.springframework.modulith:spring-modulith-starter-core")
     implementation ("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
-    compileOnly ("org.projectlombok:lombok")
     developmentOnly ("org.springframework.boot:spring-boot-devtools")
     developmentOnly ("org.springframework.boot:spring-boot-docker-compose")
+
+    //other
     runtimeOnly ("org.postgresql:postgresql")
-    annotationProcessor ("org.projectlombok:lombok")
+
+    //testing
     testImplementation ("org.springframework.boot:spring-boot-starter-liquibase-test")
     testImplementation ("org.springframework.boot:spring-boot-starter-security-test")
     testImplementation ("org.springframework.boot:spring-boot-starter-thymeleaf-test")
@@ -38,9 +41,13 @@ dependencies {
     testImplementation ("org.springframework.modulith:spring-modulith-starter-test")
     testImplementation ("org.testcontainers:testcontainers-junit-jupiter")
     testImplementation ("org.testcontainers:testcontainers-postgresql")
-    testCompileOnly ("org.projectlombok:lombok")
     testRuntimeOnly ("org.junit.platform:junit-platform-launcher")
+
+    //lombok
+    annotationProcessor ("org.projectlombok:lombok")
+    testCompileOnly ("org.projectlombok:lombok")
     testAnnotationProcessor ("org.projectlombok:lombok")
+    compileOnly ("org.projectlombok:lombok")
 }
 
 dependencyManagement {
