@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
 @MyMvcTest
-public class CustomerTest {
+public class CustomerRegistrationTest {
 
     @MockitoBean
     private CustomerService customerService;
@@ -68,9 +68,10 @@ public class CustomerTest {
         assertThat(result).hasStatus(HttpStatus.BAD_REQUEST);
     }
 
-    @Test
-    void shouldNotAllowRegisteringCustomerWithEmptyLastName() {
-        var result = sendRegistrationRequest(validRegistrationForm.withLastName(" ").build());
+    @MethodSource("blankStrings")
+    @ParameterizedTest
+    void shouldNotAllowRegisteringCustomerWithEmptyLastName(String blankLastName) {
+        var result = sendRegistrationRequest(validRegistrationForm.withLastName(blankLastName).build());
 
         assertThat(result).hasStatus(HttpStatus.BAD_REQUEST);
     }
