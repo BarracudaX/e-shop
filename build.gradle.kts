@@ -29,9 +29,17 @@ dependencies {
     developmentOnly ("org.springframework.boot:spring-boot-devtools")
     developmentOnly ("org.springframework.boot:spring-boot-docker-compose")
     developmentOnly ("org.springframework.boot:spring-boot-starter-jackson")
-    implementation("org.springframework.boot:spring-boot-starter-validation:4.1.0")
+    developmentOnly ("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
+
     //other
     runtimeOnly ("org.postgresql:postgresql")
+    implementation("org.mapstruct:mapstruct:1.6.3")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
+    implementation("org.aspectj:aspectjtools:1.9.25.1")
+    runtimeOnly("org.aspectj:aspectjweaver:1.9.25.1")
+
 
     //testing
     testImplementation ("org.springframework.boot:spring-boot-starter-liquibase-test")
