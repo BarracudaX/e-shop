@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.barracuda.eshop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

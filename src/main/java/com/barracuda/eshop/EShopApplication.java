@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.barracuda.eshop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
