@@ -28,7 +28,8 @@ dependencies {
     implementation ("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     developmentOnly ("org.springframework.boot:spring-boot-devtools")
     developmentOnly ("org.springframework.boot:spring-boot-docker-compose")
-
+    developmentOnly ("org.springframework.boot:spring-boot-starter-jackson")
+    implementation("org.springframework.boot:spring-boot-starter-validation:4.1.0")
     //other
     runtimeOnly ("org.postgresql:postgresql")
 
