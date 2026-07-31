@@ -4,8 +4,6 @@ import com.barracuda.eshop.customer.entity.Customer;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Optional;
 
 @Repository
@@ -23,7 +21,7 @@ public class CustomerRepository {
     public Optional<Customer> findByEmail(String email) {
         return jdbcClient.sql(SELECT_CUSTOMER_BY_EMAIL)
                 .param("email", email)
-                .query(CustomerRepository::mapRow)
+                .query(Customer.class)
                 .optional();
     }
 
@@ -34,13 +32,4 @@ public class CustomerRepository {
                 .update();
     }
 
-    private static Customer mapRow(ResultSet resultSet, int row) throws SQLException {
-        var id = resultSet.getLong("id");
-        var firstName = resultSet.getString("first_name");
-        var lastName = resultSet.getString("last_name");
-        var customerEmail = resultSet.getString("email");
-        var customerPassword = resultSet.getString("password");
-
-        return new Customer(id, firstName, lastName, customerEmail, customerPassword);
-    }
 }
