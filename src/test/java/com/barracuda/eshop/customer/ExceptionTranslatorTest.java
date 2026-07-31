@@ -2,7 +2,6 @@ package com.barracuda.eshop.customer;
 
 import com.barracuda.eshop.customer.exception.DuplicateEmailCustomerException;
 import com.barracuda.eshop.customer.exception.ExceptionTranslator;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DuplicateKeyException;
 

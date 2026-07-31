@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class AbstractCustomerTest {
 
-    public static final CustomerRegistrationForm.CustomerRegistrationFormBuilder johnRegistrationFormBuilder = CustomerRegistrationForm
+    public final CustomerRegistrationForm.CustomerRegistrationFormBuilder johnRegistrationFormBuilder = CustomerRegistrationForm
             .builder()
             .withFirstName("John")
             .withLastName("Doe")

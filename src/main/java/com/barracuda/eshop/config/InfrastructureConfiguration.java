@@ -18,4 +18,9 @@ public class InfrastructureConfiguration {
     public CustomerAspect customerAspect(ExceptionTranslator exceptionTranslator) {
         return new CustomerAspect(exceptionTranslator);
     }
+
+    @Bean
+    public ExceptionTranslator exceptionTranslator() {
+        return new ExceptionTranslator();
+    }
 }
