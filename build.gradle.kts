@@ -24,6 +24,7 @@ dependencies {
     implementation ("org.springframework.boot:spring-boot-starter-security")
     implementation ("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation ("org.springframework.boot:spring-boot-starter-webmvc")
+    implementation ("org.springframework.boot:spring-boot-starter-webflux") //only for testing with WebTestClient
     implementation ("org.springframework.modulith:spring-modulith-starter-core")
     implementation ("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     developmentOnly ("org.springframework.boot:spring-boot-devtools")

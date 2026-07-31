@@ -5,6 +5,7 @@ import com.barracuda.eshop.customer.dto.CustomerRegistrationForm;
 import com.barracuda.eshop.customer.exception.DuplicateEmailCustomerException;
 import com.barracuda.eshop.customer.service.CustomerService;
 import org.jspecify.annotations.NonNull;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,9 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.assertj.MockMvcTester;
-import org.springframework.test.web.servlet.assertj.MvcTestResult;
-import tools.jackson.databind.ObjectMapper;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.reactive.server.assertj.WebTestClientResponse;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.client.MockMvcWebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,27 +28,27 @@ public class CustomerRegistrationTest extends AbstractCustomerTest {
     @MockitoBean
     private CustomerService customerService;
 
-    @Autowired private MockMvcTester mockMvc;
+    @Autowired private MockMvc mockMvc;
 
-    @Autowired private ObjectMapper objectMapper;
+    private WebTestClient webTestClient;
 
-
+    @BeforeEach
+    public void setup() {
+        webTestClient = MockMvcWebTestClient.bindTo(mockMvc).build();
+    }
 
     @Test
     void customerShouldBeAbleToRegister() {
-        var result = sendRegistrationRequest(johnRegistrationFormBuilder.build());
-
-        assertThat(result).hasStatus(HttpStatus.OK);
+        assertThat(sendRegistrationRequest(johnRegistrationFormBuilder.build())).hasStatus2xxSuccessful();
     }
 
     @Test
     void shouldNotAllowRegisteringCustomerWithEmailThatIsAlreadyInUseByAnotherCustomer() {
         doNothing().doThrow(DuplicateEmailCustomerException.class).when(customerService).register(any(CustomerRegistrationForm.class));
+
         sendRegistrationRequest(johnRegistrationFormBuilder.build());
 
-        var result = sendRegistrationRequest(johnRegistrationFormBuilder.build());
-
-        assertThat(result).hasStatus(HttpStatus.CONFLICT);
+        assertThat(sendRegistrationRequest(johnRegistrationFormBuilder.build())).hasStatus(HttpStatus.CONFLICT);
     }
 
 
@@ -120,12 +122,14 @@ public class CustomerRegistrationTest extends AbstractCustomerTest {
         assertThat(result).hasStatus(HttpStatus.BAD_REQUEST);
     }
 
-    private @NonNull MvcTestResult sendRegistrationRequest(CustomerRegistrationForm registrationForm) {
-        return mockMvc
-                .post().uri("/customer/register")
+    private @NonNull WebTestClientResponse sendRegistrationRequest(CustomerRegistrationForm registrationForm) {
+        return WebTestClientResponse.from(webTestClient
+                .post()
+                .uri("/customer/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registrationForm))
-                .exchange();
+                .bodyValue(registrationForm)
+                .exchange()
+        );
     }
 
 
