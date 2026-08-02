@@ -2,6 +2,8 @@ plugins {
     id ("java")
     id ("org.springframework.boot") version ("4.1.0")
     id ("io.spring.dependency-management") version ("1.1.7")
+    kotlin("jvm") version "2.4.10"
+    kotlin("plugin.lombok") version "2.4.10"
 }
 
 group = (")com.example(")
@@ -13,6 +15,9 @@ java {
         languageVersion = JavaLanguageVersion.of(26)
     }
 }
+kotlin {
+    jvmToolchain(26)
+}
 
 repositories {
     mavenCentral()
@@ -22,17 +27,15 @@ dependencies {
     //spring
     implementation ("org.springframework.boot:spring-boot-starter-liquibase")
     implementation ("org.springframework.boot:spring-boot-starter-security")
-    implementation ("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation ("org.springframework.boot:spring-boot-starter-webmvc")
-    implementation ("org.springframework.boot:spring-boot-starter-webflux") //only for testing with WebTestClient
     implementation ("org.springframework.modulith:spring-modulith-starter-core")
     implementation ("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation ("org.springframework.boot:spring-boot-starter-jackson")
+
+    //spring development only
     developmentOnly ("org.springframework.boot:spring-boot-devtools")
     developmentOnly ("org.springframework.boot:spring-boot-docker-compose")
-    developmentOnly ("org.springframework.boot:spring-boot-starter-jackson")
-    developmentOnly ("org.springframework.boot:spring-boot-starter-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-
 
     //other
     runtimeOnly ("org.postgresql:postgresql")
@@ -43,21 +46,26 @@ dependencies {
 
 
     //testing
-    testImplementation ("org.springframework.boot:spring-boot-starter-liquibase-test")
+    testImplementation ("org.springframework.boot:spring-boot-starter-webflux") //only for testing with WebTestClient
     testImplementation ("org.springframework.boot:spring-boot-starter-security-test")
-    testImplementation ("org.springframework.boot:spring-boot-starter-thymeleaf-test")
+    testImplementation ("org.springframework.boot:spring-boot-starter-liquibase-test")
     testImplementation ("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation ("org.springframework.boot:spring-boot-testcontainers")
     testImplementation ("org.springframework.modulith:spring-modulith-starter-test")
     testImplementation ("org.testcontainers:testcontainers-junit-jupiter")
     testImplementation ("org.testcontainers:testcontainers-postgresql")
     testRuntimeOnly ("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly ("org.springframework.boot:spring-boot-starter-data-jdbc")
 
     //lombok
     annotationProcessor ("org.projectlombok:lombok")
     testCompileOnly ("org.projectlombok:lombok")
     testAnnotationProcessor ("org.projectlombok:lombok")
     compileOnly ("org.projectlombok:lombok")
+
+    //kotlin
+    testImplementation(kotlin("test"))
+
 }
 
 dependencyManagement {

@@ -1,69 +1,67 @@
-package com.barracuda.eshop.customer;
+package com.barracuda.eshop.customer
 
-import com.barracuda.eshop.annotation.MySpringBootTest;
-import com.barracuda.eshop.customer.dto.CustomerRegistrationForm;
-import com.barracuda.eshop.customer.entity.Customer;
-import com.barracuda.eshop.customer.exception.DuplicateEmailCustomerException;
-import com.barracuda.eshop.customer.repository.CustomerRepository;
-import com.barracuda.eshop.customer.service.CustomerService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import com.barracuda.eshop.annotation.MySpringBootTest
+import com.barracuda.eshop.customer.dto.CustomerRegistrationForm
+import com.barracuda.eshop.customer.entity.Customer
+import com.barracuda.eshop.customer.exception.DuplicateEmailCustomerException
+import com.barracuda.eshop.customer.repository.CustomerRepository
+import com.barracuda.eshop.customer.service.CustomerService
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @MySpringBootTest
-public class CustomerServiceTest extends AbstractCustomerTest {
+class CustomerServiceTest : AbstractCustomerTest() {
+    @Autowired
+    private lateinit var customerService: CustomerService
 
     @Autowired
-    private CustomerService customerService;
+    private lateinit var customerRepository: CustomerRepository
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private lateinit var passwordEncoder: PasswordEncoder
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    private final CustomerRegistrationForm johnRegistration = johnRegistrationFormBuilder.build();
+    private val johnRegistration: CustomerRegistrationForm = johnRegistrationFormBuilder.build()
 
     @Test
-    void shouldStoreCustomerDataInDatabase() {
-        assertThat(customerRepository.findByEmail(johnRegistration.email())).isEmpty();
-        Customer expectedCustomer = getExpectedCustomer(johnRegistration);
+    fun shouldStoreCustomerDataInDatabase() {
+        Assertions.assertThat(customerRepository.findByEmail(johnRegistration.email)).isEmpty()
+        val expectedCustomer = getExpectedCustomer(johnRegistration)
 
-        customerService.register(johnRegistration);
+        customerService.register(johnRegistration)
 
-        assertThat(getCustomerByEmail(johnRegistration.email()))
-                .usingRecursiveComparison()
-                .ignoringFields("id","password")
-                .isEqualTo(expectedCustomer);
-    }
-
-    @Test
-    void shouldThrowDuplicateEmailWhenRegisteringCustomerWithEmailThatIsAlreadyUsed() {
-        customerService.register(johnRegistration);
-
-        assertThatThrownBy(() -> customerService.register(johnRegistration)).isInstanceOf(DuplicateEmailCustomerException.class);
+        Assertions.assertThat(getCustomerByEmail(johnRegistration.email))
+            .usingRecursiveComparison()
+            .ignoringFields("id", "password")
+            .isEqualTo(expectedCustomer)
     }
 
     @Test
-    void shouldStoreEncodedCustomerPassword() {
-        customerService.register(johnRegistration);
-        var storedCustomer = getCustomerByEmail(johnRegistration.email());
+    fun shouldThrowDuplicateEmailWhenRegisteringCustomerWithEmailThatIsAlreadyUsed() {
+        customerService.register(johnRegistration)
 
-        assertThat(storedCustomer.password()).isNotEqualTo(johnRegistration.password());
-
-        assertThat(passwordEncoder.matches(johnRegistration.password(), storedCustomer.password()))
-                .withFailMessage("Expected customer password to be encoded with "+passwordEncoder)
-                .isTrue();
+        Assertions.assertThatThrownBy { customerService.register(johnRegistration) }
+            .isInstanceOf(DuplicateEmailCustomerException::class.java)
     }
 
-    private Customer getExpectedCustomer(CustomerRegistrationForm form) {
-        return new Customer(0, form.firstName(), form.lastName(), form.email(), form.password());
+    @Test
+    fun shouldStoreEncodedCustomerPassword() {
+        customerService.register(johnRegistration)
+        val storedCustomer = getCustomerByEmail(johnRegistration.email)
+
+        Assertions.assertThat(storedCustomer.password).isNotEqualTo(johnRegistration.password)
+
+        Assertions.assertThat(passwordEncoder.matches(johnRegistration.password, storedCustomer.password))
+            .withFailMessage("Expected customer password to be encoded with $passwordEncoder")
+            .isTrue()
     }
 
-    private Customer getCustomerByEmail(String email) {
-        return customerRepository.findByEmail(email).get();
+    private fun getExpectedCustomer(form: CustomerRegistrationForm): Customer {
+        return Customer(0, form.firstName, form.lastName, form.email, form.password)
+    }
+
+    private fun getCustomerByEmail(email: String): Customer {
+        return customerRepository.findByEmail(email).get()
     }
 }

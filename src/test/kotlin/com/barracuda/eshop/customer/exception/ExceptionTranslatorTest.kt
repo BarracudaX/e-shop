@@ -1,26 +1,22 @@
-package com.barracuda.eshop.customer;
+package com.barracuda.eshop.customer.exception
 
-import com.barracuda.eshop.customer.exception.DuplicateEmailCustomerException;
-import com.barracuda.eshop.customer.exception.ExceptionTranslator;
-import org.junit.jupiter.api.Test;
-import org.springframework.dao.DuplicateKeyException;
+import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.junit.jupiter.api.Test
+import org.springframework.dao.DuplicateKeyException
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-public class ExceptionTranslatorTest {
-
-    private final ExceptionTranslator exceptionTranslator = new ExceptionTranslator();
+class ExceptionTranslatorTest {
+    private val exceptionTranslator = ExceptionTranslator()
 
     @Test
-    void shouldTranslateDuplicateKeyExceptionToDuplicateCustomerEmailExceptionIfTheExceptionMessageContainsEmailConstraintViolation() {
-
-        assertThatThrownBy(() -> exceptionTranslator.translate(new DuplicateKeyException("email_unique_constraint"))).isInstanceOf(DuplicateEmailCustomerException.class);
-
+    fun shouldTranslateDuplicateKeyExceptionToDuplicateCustomerEmailExceptionIfTheExceptionMessageContainsEmailConstraintViolation() {
+        assertThatThrownBy {
+            exceptionTranslator.translate(DuplicateKeyException("email_unique_constraint"))
+        }.isInstanceOf(DuplicateEmailCustomerException::class.java)
     }
 
     @Test
-    void shouldNotTranslateRethrowTheProvidedExceptionIfTranslationIsNotPossible() {
-        var exception = new DuplicateKeyException("UNKNOWN_ERROR");
-        assertThatThrownBy(() -> exceptionTranslator.translate(exception)).isEqualTo(exception);
+    fun shouldNotTranslateRethrowTheProvidedExceptionIfTranslationIsNotPossible() {
+        val exception = DuplicateKeyException("UNKNOWN_ERROR")
+        assertThatThrownBy { exceptionTranslator.translate(exception) }.isEqualTo(exception)
     }
 }

@@ -9,10 +9,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Profile({"dev","test"})
 @Configuration
 public class SpringDevSecurityConfiguration {
 
+
+    @Profile({"dev","test"})
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         return http

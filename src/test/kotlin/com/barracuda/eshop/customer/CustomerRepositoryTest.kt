@@ -1,26 +1,24 @@
-package com.barracuda.eshop.customer;
+package com.barracuda.eshop.customer
 
-import com.barracuda.eshop.TestcontainersConfiguration;
-import com.barracuda.eshop.customer.repository.CustomerRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.test.autoconfigure.JdbcTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
-
+import com.barracuda.eshop.TestcontainersConfiguration
+import com.barracuda.eshop.customer.repository.CustomerRepository
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.jdbc.test.autoconfigure.JdbcTest
+import org.springframework.context.annotation.Import
+import org.springframework.test.context.ActiveProfiles
 
 @ActiveProfiles("test")
-@Import({TestcontainersConfiguration.class,CustomerRepository.class})
+@Import(TestcontainersConfiguration::class, CustomerRepository::class)
 @JdbcTest
-public class CustomerRepositoryTest {
- 
+class CustomerRepositoryTest {
     @Autowired
-    private CustomerRepository customerRepository;
+    private lateinit var customerRepository: CustomerRepository
 
 
     @Test
-    void shouldReturnEmptyOptionalWhenSearchingForCustomerByEmailThatDoesNotExist() {
-        Assertions.assertThat(customerRepository.findByEmail("email_does_not_exist")).isEmpty();
+    fun shouldReturnEmptyOptionalWhenSearchingForCustomerByEmailThatDoesNotExist() {
+        Assertions.assertThat(customerRepository.findByEmail("email_does_not_exist")).isEmpty()
     }
 }
