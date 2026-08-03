@@ -27,7 +27,7 @@ class CustomerServiceTest : AbstractCustomerTest() {
     @Test
     fun shouldStoreCustomerDataInDatabase() {
         Assertions.assertThat(customerRepository.findByEmail(johnRegistration.email)).isEmpty()
-        val expectedCustomer = getExpectedCustomer(johnRegistration)
+        val expectedCustomer = toExpectedCustomer(johnRegistration)
 
         customerService.register(johnRegistration)
 
@@ -57,7 +57,7 @@ class CustomerServiceTest : AbstractCustomerTest() {
             .isTrue()
     }
 
-    private fun getExpectedCustomer(form: CustomerRegistrationForm): Customer {
+    private fun toExpectedCustomer(form: CustomerRegistrationForm): Customer {
         return Customer(0, form.firstName, form.lastName, form.email, form.password)
     }
 

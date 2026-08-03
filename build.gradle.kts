@@ -30,8 +30,9 @@ dependencies {
     implementation ("org.springframework.boot:spring-boot-starter-webmvc")
     implementation ("org.springframework.modulith:spring-modulith-starter-core")
     implementation ("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation ("org.springframework.boot:spring-boot-starter-validation")
     implementation ("org.springframework.boot:spring-boot-starter-jackson")
+    implementation ("org.springframework.boot:spring-boot-starter-data-jdbc")
 
     //spring development only
     developmentOnly ("org.springframework.boot:spring-boot-devtools")
@@ -52,10 +53,10 @@ dependencies {
     testImplementation ("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation ("org.springframework.boot:spring-boot-testcontainers")
     testImplementation ("org.springframework.modulith:spring-modulith-starter-test")
+    testImplementation ("org.springframework.boot:spring-boot-starter-data-jdbc-test")
     testImplementation ("org.testcontainers:testcontainers-junit-jupiter")
     testImplementation ("org.testcontainers:testcontainers-postgresql")
     testRuntimeOnly ("org.junit.platform:junit-platform-launcher")
-    testRuntimeOnly ("org.springframework.boot:spring-boot-starter-data-jdbc")
 
     //lombok
     annotationProcessor ("org.projectlombok:lombok")

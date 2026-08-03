@@ -23,7 +23,7 @@ public class CustomerService {
 
     public void register(CustomerRegistrationForm registrationForm) {
         Customer customer = CustomerMapper.INSTANCE.customerRegistrationFormToCustomer(registrationForm).withEncodedPassword(passwordEncoder);
-        customerRepository.insertCustomer(customer);
+        customerRepository.save(customer);
     }
 
 }

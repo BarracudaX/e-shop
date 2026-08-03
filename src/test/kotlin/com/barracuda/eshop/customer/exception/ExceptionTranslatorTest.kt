@@ -8,14 +8,14 @@ class ExceptionTranslatorTest {
     private val exceptionTranslator = ExceptionTranslator()
 
     @Test
-    fun shouldTranslateDuplicateKeyExceptionToDuplicateCustomerEmailExceptionIfTheExceptionMessageContainsEmailConstraintViolation() {
+    fun `should translate DuplicateKeyException to DuplicateCustomerEmailException if the exception message contains unique email constraint violation`() {
         assertThatThrownBy {
             exceptionTranslator.translate(DuplicateKeyException("email_unique_constraint"))
         }.isInstanceOf(DuplicateEmailCustomerException::class.java)
     }
 
     @Test
-    fun shouldNotTranslateRethrowTheProvidedExceptionIfTranslationIsNotPossible() {
+    fun `should not translate and rethrow the provided exception if the exception is not recognized`() {
         val exception = DuplicateKeyException("UNKNOWN_ERROR")
         assertThatThrownBy { exceptionTranslator.translate(exception) }.isEqualTo(exception)
     }

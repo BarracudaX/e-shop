@@ -5,13 +5,13 @@ import com.barracuda.eshop.customer.repository.CustomerRepository
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.jdbc.test.autoconfigure.JdbcTest
+import org.springframework.boot.data.jdbc.test.autoconfigure.DataJdbcTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 
 @ActiveProfiles("test")
-@Import(TestcontainersConfiguration::class, CustomerRepository::class)
-@JdbcTest
+@Import(TestcontainersConfiguration::class)
+@DataJdbcTest
 class CustomerRepositoryTest {
     @Autowired
     private lateinit var customerRepository: CustomerRepository
